@@ -15,7 +15,8 @@
     "langchain-ollama==0.2.2",
     "langgraph==0.2.61",
     "openai==1.59.3",
-    "python-ulid==3.0.0"
+    "python-ulid==3.0.0",
+    "aiofiles==24.1.0"
   ],
   "version": "0.0.1"
 }
