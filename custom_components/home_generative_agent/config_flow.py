@@ -14,6 +14,9 @@ from homeassistant.config_entries import (
 )
 from homeassistant.const import (
     CONF_API_KEY,
+    CONF_URL,
+    CONF_API_VERSION,
+    CONF_MODEL,
     CONF_LLM_HASS_API,
 )
 from homeassistant.exceptions import HomeAssistantError
@@ -27,7 +30,7 @@ from homeassistant.helpers.selector import (
     SelectSelectorConfig,
     TemplateSelector,
 )
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, AzureChatOpenAI
 
 from .const import (
     CONF_CHAT_MODEL,
@@ -60,7 +63,10 @@ _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
+        vol.Required(CONF_URL): str,
         vol.Required(CONF_API_KEY): str,
+        vol.Required(CONF_API_VERSION): str,
+        vol.Required(CONF_MODEL): str,
     }
 )
 RECOMMENDED_OPTIONS = {
@@ -75,8 +81,16 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
     Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
     """
-    client = ChatOpenAI(
-        api_key=data[CONF_API_KEY], async_client=get_async_client(hass)
+    # client = ChatOpenAI(
+    #     api_key=data[CONF_API_KEY], async_client=get_async_client(hass), openai_api_base=data[CONF_URL]
+    # )
+    client = AzureChatOpenAI(
+        azure_endpoint=data[CONF_URL],
+        api_key=data[CONF_API_KEY],
+        api_version=data[CONF_API_VERSION],
+        azure_deployment=data[CONF_MODEL],
+        model=data[CONF_MODEL],
+        async_client=get_async_client(hass),
     )
     await hass.async_add_executor_job(client.bind(timeout=10).get_name)
 

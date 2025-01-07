@@ -1,5 +1,5 @@
 {
-    "name": "goruck/home_generative_agent",
+    "name": "goruck/home_generative_agent_azure",
     "image": "mcr.microsoft.com/devcontainers/python:3.12",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [

@@ -1,6 +1,6 @@
 """Constants for Home Generative Agent."""
 
-DOMAIN = "home_generative_agent"
+DOMAIN = "home_generative_agent_azure"
 
 ### Configuration parameters that can be overridden in the integration's config UI. ###
 # Name of the set of recommended options.
@@ -61,7 +61,7 @@ Call the tool again with your mistake corrected.
 
 ### Ollama VLM parameters. ###
 # Ollama VLM server URL.
-VLM_URL = "192.168.1.252:11434"
+VLM_URL = "192.168.1.140:11434"
 # Ollama VLM maximum number of output tokens to generate.
 VLM_NUM_PREDICT = 4096
 # Ollama VLM model prompts for summary tasks.
@@ -83,7 +83,7 @@ VISION_MODEL_IMAGE_WIDTH = 1920
 VISION_MODEL_IMAGE_HEIGHT = 1080
 
 ### Ollama embedding model parameters. ###
-EMBEDDING_MODEL_URL = "192.168.1.252:11434"
+EMBEDDING_MODEL_URL = "192.168.1.140:11434"
 EMBEDDING_MODEL_DIMS = 512
 EMBEDDING_MODEL_PROMPT_TEMPLATE = """
 Represent this sentence for searching relevant passages: {query}

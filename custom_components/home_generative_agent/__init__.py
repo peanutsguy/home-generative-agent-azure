@@ -1,17 +1,18 @@
-"""Home Generative Agent Initalization."""
+"""Home Generative Agent Azure Initalization."""
 
 from __future__ import annotations
 
 import logging
+import os
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from homeassistant.const import CONF_API_KEY, Platform
+from homeassistant.const import CONF_API_KEY, CONF_URL, CONF_API_VERSION, CONF_MODEL, Platform
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.httpx_client import get_async_client
 from langchain_core.runnables import ConfigurableField
 from langchain_ollama import ChatOllama, OllamaEmbeddings
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, AzureChatOpenAI
 
 from .const import (
     EMBEDDING_MODEL_URL,
@@ -34,17 +35,31 @@ type HGAConfigEntry = ConfigEntry[HGAData]
 class HGAData:
     """Data for Home Generative Assistant."""
 
-    chat_model: ChatOpenAI
+    # chat_model: ChatOpenAIs
+    chat_model: AzureChatOpenAI
     vision_model: ChatOllama
 
 async def async_setup_entry(hass: HomeAssistant, entry: HGAConfigEntry) -> bool:
     """Set up Home generative Agent from a config entry."""
-    chat_model = ChatOpenAI( #TODO: fix blocking call
+    # chat_model = ChatOpenAI( #TODO: fix blocking call
+    #     api_key=entry.data.get(CONF_API_KEY),
+    #     openai_api_base=entry.data.get(CONF_URL),
+    #     timeout=10,
+    #     http_async_client=get_async_client(hass),
+    # ).configurable_fields(
+    #     model_name=ConfigurableField(id="model_name"),
+    #     temperature=ConfigurableField(id="temperature"),
+    #     top_p=ConfigurableField(id="top_p"),
+    # )
+    chat_model = AzureChatOpenAI( #TODO: fix blocking call
+        azure_endpoint=entry.data.get(CONF_URL),
         api_key=entry.data.get(CONF_API_KEY),
+        api_version=entry.data.get(CONF_API_VERSION),
+        azure_deployment=entry.data.get(CONF_MODEL),
+        model=entry.data.get(CONF_MODEL),
         timeout=10,
         http_async_client=get_async_client(hass),
     ).configurable_fields(
-        model_name=ConfigurableField(id="model_name"),
         temperature=ConfigurableField(id="temperature"),
         top_p=ConfigurableField(id="top_p"),
     )

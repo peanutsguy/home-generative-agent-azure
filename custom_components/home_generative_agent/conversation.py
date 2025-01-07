@@ -106,8 +106,8 @@ class HGAConversationEntity(
         self._attr_device_info = dr.DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             name=entry.title,
-            manufacturer="LinTek",
-            model="HGA",
+            manufacturer="CTech",
+            model="HGAAZ",
             entry_type=dr.DeviceEntryType.SERVICE,
         )
 

@@ -1,4 +1,6 @@
-# home-generative-agent
+# home-generative-agent-azure
+
+> Based on [goruk's Home Generative Agent](https://github.com/goruck/home_generative_agent), refactored to work with Azure OpenAI, instead of OpenAI.
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
@@ -112,7 +114,7 @@ The agent is built using LangGraph and uses the HA `conversation` component to i
 
 Model | Location | Purpose
 -- | -- | -- |
-[GPT-4o](https://platform.openai.com/docs/models#gpt-4o) | OpenAI Cloud | High-level reasoning and planning
+[GPT-4o](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models?tabs=global-standard%2Cstandard-chat-completions#gpt-4) | Azure OpenAI Cloud | High-level reasoning and planning
 [llama-3.2-vision-11b](https://ollama.com/library/llama3.2-vision) | Ollama Edge | Image scene analysis
 [llama-3.2-vision-11b](https://ollama.com/library/llama3.2-vision) | Ollama Edge | Primary model context summarization
 [mxbai-embed-large](https://ollama.com/library/mxbai-embed-large) | Ollama Edge | Embedding generation for sematic search
@@ -127,7 +129,7 @@ The agent workflow has five nodes, each Python module modifying the agent's stat
 The ```__start__``` and ```__end__``` nodes inform the graph where to start and stop. The ```agent``` node runs the primary LLM, and if it decides to use a tool, the ```action``` node runs the tool and then returns control to the ```agent```. The ```summarize_and_trim``` node processes the LLM's context to manage growth while maintaining accuracy if ```agent``` has no tool to call and the number of messages meets the below-mentioned conditions.
 
 ### LLM Context Management
-You need to carefully manage the context length of LLMs to balance cost, accuracy, and latency and avoid triggering rate limits such as OpenAI's Tokens per Minute restriction. The system controls the context length of the primary model in two ways: it trims the messages in the context if they exceed a max parameter, and the context is summarized once the number of messages exceeds another parameter. These parameters are configurable in `const.py`; their description is below.
+You need to carefully manage the context length of LLMs to balance cost, accuracy, and latency and avoid triggering rate limits such as Azure OpenAI's Tokens per Minute restriction. The system controls the context length of the primary model in two ways: it trims the messages in the context if they exceed a max parameter, and the context is summarized once the number of messages exceeds another parameter. These parameters are configurable in `const.py`; their description is below.
 
 Parameter | Description | Default
 -- | -- | -- |
@@ -169,8 +171,8 @@ I built the HA installation on a Raspberry Pi 5 with SSD storage, Zigbee, and LA
 
 1. Using the tool of choice, open your HA configuration's directory (folder) (where you find `configuration.yaml`).
 2. If you do not have a `custom_components` directory (folder), you must create it.
-3. In the `custom_components` directory (folder), create a new folder called `home_generative_agent`.
-4. Download _all_ the files from the `custom_components/home_generative_agent/` directory (folder) in this repository.
+3. In the `custom_components` directory (folder), create a new folder called `home_generative_agent_azure`.
+4. Download _all_ the files from the `custom_components/home_generative_agent_azure/` directory (folder) in this repository.
 4. Place the files you downloaded in the new directory (folder) you created.
 6. Restart Home Assistant
 7. In the HA UI, go to "Configuration" -> "Integrations" click "+," and search for "Home Generative Agent"
@@ -187,7 +189,7 @@ If you want to contribute to this, please read the [Contribution guidelines](CON
 
 ***
 
-[home_generative_agent]: https://github.com/goruck/home-generative-agent
+[home_generative_agent_azure]: https://github.com/goruck/home-generative-agent
 [commits-shield]: https://img.shields.io/github/commit-activity/y/goruck/home-generative-agent.svg?style=for-the-badge
 [commits]: https://github.com/goruck/home-generative-agent/commits/main
 [license-shield]: https://img.shields.io/github/license/goruck/home-generative-agent.svg?style=for-the-badge
